@@ -15,6 +15,7 @@ const HomeNews = () => import('../components/HomeNews')
 const HomeMessage = () => import('../components/HomeMessage')
 const About = () => import('../components/About')
 const User = () => import('../components/User')
+const Profile = () => import('../components/Profile')
 
 // 安装插件
 Vue.use(VueRouter)
@@ -30,6 +31,9 @@ const routes = [
     {
         path: '/home',
         component: Home,
+        meta: {
+            title: '首页'
+        },
         children: [
             // 默认
             {
@@ -51,12 +55,30 @@ const routes = [
     // 关于
     {
         path: '/about',
-        component: About
+        component: About,
+        meta: {
+            title: '关于'
+        },
     },
     // 用户
     {
         path: '/user/:id',
-        component: User
+        component: User,
+        meta: {
+            title: '用户'
+        },
+    },
+    // profile
+    {
+        path: '/profile',
+        component: Profile,
+        meta: {
+            title: '档案'
+        },
+        beforeEnter: (to, from, next) => {
+            console.log('1111')
+            next();
+        }
     }
 ]
 const router = new VueRouter({
@@ -64,6 +86,11 @@ const router = new VueRouter({
     routes,
     mode: 'history',
     linkActiveClass: 'active'
+})
+
+router.beforeEach((to,from,next) => {
+    document.title = to.matched[0].meta.title
+    next()
 })
 
 // 将router对象传入到vue实例
